@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Resume Scorecard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand&family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: #0a0f3d; /* dark royal blue */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      color: #eee;
+      overflow-x: hidden;
+    }
+    .container {
+      background: linear-gradient(135deg, #2a1a72, #4c3c94, #3b2c7f);
+      padding: 40px 35px 50px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(70, 47, 147, 0.7);
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      overflow: hidden;
+      color: #eee;
+    }
+    /* Shimmer animation on container */
+    .container::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255,255,255,0.12) 50%,
+        transparent 70%
+      );
+      animation: shimmer 4s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes shimmer {
+      0% { transform: rotate(25deg) translateX(-100%); }
+      100% { transform: rotate(25deg) translateX(100%); }
+    }
+    main.container > * {
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.3rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: #d7d2f0; /* soft lavender */
+      letter-spacing: 0.04em;
+      user-select: none;
+      text-shadow: 0 0 6px #8c80d9;
+    }
+    h2.welcome {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 32px;
+      font-size: 1.2rem;
+      color: #c1bff0;
+      font-style: italic;
+      user-select: none;
+      text-shadow: 0 0 4px #7b6fd1;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+      color: #b0aee3;
+      user-select: none;
+    }
+    input[type="file"],
+    textarea {
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1.8px solid #695eb3;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      resize: none;
+      color: #eee;
+      margin-bottom: 22px;
+      background-color: #2f2770;
+      cursor: pointer;
+      user-select: text;
+    }
+    input[type="file"] {
+      cursor: pointer;
+    }
+    input[type="file"]::-webkit-file-upload-button {
+      background: #8c80d9;
+      color: #23233d;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-family: 'Roboto', sans-serif;
+      transition: background-color 0.3s ease;
+    }
+    input[type="file"]::-webkit-file-upload-button:hover {
+      background: #7b6fd1;
+      color: #e0e0ff;
+    }
+    input[type="file"]:focus,
+    textarea:focus {
+      border-color: #b8afff;
+      box-shadow: 0 0 12px #b8afffbb;
+      background-color: #39306e;
+      color: #f0f0ff;
+    }
+    textarea::placeholder {
+      color: #bbb8d5;
+      font-style: italic;
+    }
+
+    /* Interactive label float effect */
+    .input-group {
+      position: relative;
+      margin-bottom: 30px;
+    }
+    .input-group label {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      background: #2a1a72;
+      padding: 0 6px;
+      color: #b2aee1;
+      font-weight: 400;
+      font-size: 0.9rem;
+      pointer-events: none;
+      transition: 0.25s ease all;
+      border-radius: 4px;
+      user-select: none;
+    }
+    .input-group input:focus + label,
+    .input-group textarea:focus + label,
+    .input-group input:not(:placeholder-shown) + label,
+    .input-group textarea:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 12px;
+      font-size: 0.75rem;
+      color: #b8afff;
+      font-weight: 700;
+      box-shadow: 0 0 6px #b8afffcc;
+    }
+
+    button {
+      margin-top: 4px;
+      padding: 15px 0;
+      background: #8c80d9;
+      border: none;
+      border-radius: 24px;
+      font-weight: 900;
+      font-size: 1.15rem;
+      color: #23233d;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 15px rgba(140, 128, 217, 0.7);
+      user-select: none;
+    }
+    button:hover {
+      background: #7b6fd1;
+      box-shadow: 0 8px 24px rgba(123, 111, 209, 0.85);
+      color: #e0e0ff;
+    }
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 18px #b8afff, 0 0 26px #b8afffcc;
+    }
+    button:active {
+      transform: scale(0.97);
+    }
+
+    /* Progress bar inside button */
+    button::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0;
+      background: rgba(255,255,255,0.15);
+      transition: width 0.4s ease;
+      z-index: 1;
+      border-radius: 24px;
+    }
+    button:active::before {
+      width: 100%;
+      transition: width 0.1s ease;
+    }
+
+    /* Result styling */
+    .result {
+      margin-top: 30px;
+      padding: 24px 20px;
+      border-radius: 16px;
+      background: #2f2260;
+      color: #b8afff;
+      font-weight: 700;
+      font-size: 1.3rem;
+      text-align: center;
+      box-shadow: 0 4px 18px rgba(138, 118, 200, 0.5);
+      user-select: none;
+      animation: fadeInUp 0.7s ease forwards;
+      position: relative;
+      user-select: none;
+    }
+    .result .score {
+      font-size: 3rem;
+      color: #a18aff;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px #a18affcc;
+    }
+    .result .message {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #c4bfff;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      .container {
+        padding: 30px 25px 40px;
+        max-width: 90vw;
+      }
+      h1 {
+        font-size: 1.9rem;
+      }
+      h2.welcome {
+        font-size: 1rem;
+      }
+      button {
+        font-size: 1.05rem;
+        padding: 14px 0;
+      }
+      .result {
+        font-size: 1.1rem;
+      }
+      .result .score {
+        font-size: 2.4rem;
+      }
+      .result .message {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container" role="main" aria-label="AI Resume Scorecard Form">
+    <h2 class="welcome">Welcome to your professional AI Resume evaluation</h2>
+    <h1>AI Resume Scorecard</h1>
+    <form method="POST" action="/score" enctype="multipart/form-data" aria-describedby="form-instructions" novalidate>
+      <div class="input-group">
+        <input type="file" id="resume" name="resume" accept=".pdf,.docx,.doc,.jpg,.jpeg,.png" required aria-required="true" placeholder=" " />
+        <label for="resume">Upload Resume (PDF, DOCX, JPG)</label>
+      </div>
+
+      <div class="input-group">
+        <textarea id="jd" name="jd" rows="6" placeholder=" " required aria-required="true"></textarea>
+        <label for="jd">Paste Job Description</label>
+      </div>
+
+      <button type="submit" aria-label="Submit form to evaluate resume">Evaluate</button>
+    </form>
+
+    {% if score %}
+      <section class="result" role="region" aria-live="polite" aria-atomic="true">
+        <div class="score">Score: {{ score }}%</div>
+        <div class="message">{{ message }}</div>
+      </section>
+    {% endif %}
+  </main>
+</body>
+</html>
